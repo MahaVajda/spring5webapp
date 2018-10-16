@@ -3,6 +3,7 @@ package guru.springframework.spring5webapp.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+@Entity
 public class Book {
 
 	@Id
@@ -22,8 +24,24 @@ public class Book {
 	@ManyToMany
 	@JoinTable(name = "authors_book",joinColumns = @JoinColumn(name = "book_id"),
 	inverseJoinColumns = @JoinColumn(name = "author_id") )
-	private Set<Book> authorses  = new HashSet<>();
+	private Set<Author> authorses  = new HashSet<>();
 
+    public Book() {
+    }
+
+    public Book(String title, String isbn, String publisher) {
+        this.title = title;
+        this.isbn = isbn;
+        this.publisher = publisher;
+    }
+
+    public Book(String title, String isbn, String publisher, Set<Author> authors) {
+        this.title = title;
+        this.isbn = isbn;
+        this.publisher = publisher;
+        this.authorses = authors;
+    }
+	
 	
 	public long getId() {
 		return id;
@@ -57,11 +75,11 @@ public class Book {
 		this.title = title;
 	}
 
-	public Set<Book> getAuthorses() {
+	public Set<Author> getAuthorses() {
 		return authorses;
 	}
 
-	public void setAuthorses(Set<Book> authorses) {
+	public void setAuthorses(Set<Author> authorses) {
 		this.authorses = authorses;
 	}
 
