@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Book {
@@ -18,14 +19,31 @@ public class Book {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private String isbn;
-	private String publisher;
+	@OneToOne
+	private Publisher publisher;
 	private String title;
 	
 	@ManyToMany
 	@JoinTable(name = "authors_book",joinColumns = @JoinColumn(name = "book_id"),
 	inverseJoinColumns = @JoinColumn(name = "author_id") )
-	private Set<Book> authorses  = new HashSet<>();
+	private Set<Author> authorses  = new HashSet<>();
 
+    public Book() {
+    }
+
+    public Book(String title, String isbn, Publisher publisher) {
+        this.title = title;
+        this.isbn = isbn;
+        this.publisher = publisher;
+    }
+
+    public Book(String title, String isbn, Publisher publisher, Set<Author> authors) {
+        this.title = title;
+        this.isbn = isbn;
+        this.publisher = publisher;
+        this.authorses = authors;
+    }
+	
 	
 	public long getId() {
 		return id;
@@ -43,11 +61,11 @@ public class Book {
 		this.isbn = isbn;
 	}
 
-	public String getPublisher() {
+	public Publisher getPublisher() {
 		return publisher;
 	}
 
-	public void setPublisher(String publisher) {
+	public void setPublisher(Publisher publisher) {
 		this.publisher = publisher;
 	}
 
@@ -59,11 +77,11 @@ public class Book {
 		this.title = title;
 	}
 
-	public Set<Book> getAuthorses() {
+	public Set<Author> getAuthorses() {
 		return authorses;
 	}
 
-	public void setAuthorses(Set<Book> authorses) {
+	public void setAuthorses(Set<Author> authorses) {
 		this.authorses = authorses;
 	}
 
